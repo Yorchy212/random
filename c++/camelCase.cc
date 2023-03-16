@@ -25,10 +25,12 @@ string camelCase(const string s) {
     return resul;
 }
 
-int main() {
+int main(int argc, char* argv[]) {
     string s;
-    cout << "Dame tu string: ";
-    getline(cin, s);
+    for (int i = 1; i < argc; i++) {
+        s += argv[i];
+        s += " ";
+    }
     cout << camelCase(s) << endl;
     return 0;
 }

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ostream>
 using namespace std;
 
 class Error {};
@@ -42,6 +43,10 @@ class List {
         ult = nullptr;
     }
 
+    Node<T>* primero() {
+        return pri;
+    }
+
     int size() { // OKAY
         return longi;
     }
@@ -78,7 +83,7 @@ class List {
         return cont;
     }
 
-    bool min(T& a) {
+    bool min(T& a) { // OKAY
         bool resul;
         if (longi > 0) {
             a = pri->e();
@@ -100,7 +105,7 @@ class List {
         return resul;
     }
 
-    void max(T& a) {
+    bool max(T& a) { // OKAY
         bool resul;
         if (longi > 0) {
             a = pri->e();
@@ -122,10 +127,60 @@ class List {
         return resul;
     }
 
-    void pop(const int& index, T& a) {
+    bool insert(const T& a, const int& n) {
+        bool resul;
+        if (n >= 0 && n <= longi) {
+            resul = true;
+            if (n == longi || longi == 0) {
+                this->append(a);
+            }
+            else {
+                Node<T>* aux = pri;
+                if (n == 0) {
+                    pri = new Node<T>;
+                    pri->modE(a);
+                    pri->modS(aux);
+                }
+                else {
+                    for (int i = 0; i < n - 1; i++) {
+                        aux = aux->sig();
+                    }
+                    Node<T>* aux2 = aux->sig();
+                    Node<T>* aux3 = new Node<T>;
+                    aux3->modE(a);
+                    aux3->modS(aux2);
+                    aux->modS(aux3);
+                }
+                longi++;
+            }
+        }
+        else {
+            resul = false;
+        }
+        return resul;
+    }
+/*
+    bool pop(const int& index, T& a) {
     }
 
-    void pop(T& a) {
+    bool pop(T& a) {
     }
-
+*/
 };
+
+template <typename T>
+ostream& operator<<(ostream& os, List<T>& list) {
+    Node<T>* aux = list.primero();
+    os << "[";
+    for (int i = 0; i < list.size(); i++) {
+        if (i == list.size() - 1) {
+            os << aux->e();
+        }
+        else {
+            os << aux->e() << ", ";
+        }
+        aux = aux->sig();
+    }
+    os << "]\n";
+    return os;
+}
